@@ -37,9 +37,8 @@ public class AddressBookDirectory {
 	
 	public void addAddressBook() {
 		
-		System.out.println("Enter number of Address Books you want to add to Address book Directory");
-		int numberOfAdditions= scannerObject.nextInt();
-		int endIterator = numberOfAdditions+numOfAddressBooks;
+System.out.println("You can add only "+(NUM_OF_ADDRESS_BOOKS-numOfAddressBooks)+" books");
+		
 		String addressBookName = "";
 		
 		if(numOfAddressBooks == 0) {
@@ -51,11 +50,6 @@ public class AddressBookDirectory {
 			numOfAddressBooks++;
 		}
 		
-		if(endIterator > NUM_OF_ADDRESS_BOOKS) {
-			System.out.println("Address Book Directory is FULL !");
-			System.out.println("You can add: "+(NUM_OF_ADDRESS_BOOKS-numOfAddressBooks));
-			return;
-		}
 		else {
 			
 			boolean bookExists = false;
