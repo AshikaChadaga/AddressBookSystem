@@ -19,7 +19,7 @@ public class AddressBookDirectory {
 
 			System.out.println("\nChoose the operation on the Directory you want to perform");
 			System.out.println(
-					"1.Add an Address Book\n2.Edit Existing Address Book\n3.Search Person By City\n4.Search Person By State\n5.View By City\n6.View By State\n7.Display Address book Directory\n8.Exit Address book System");
+					"1.Add an Address Book\n2.Edit Existing Address Book\n3.Search Person By Region\n4.View People By Region\n5.Count People By Region\n6.Display Address book Directory\n7.Exit Address book System");
 
 			switch (scannerObject.nextInt()) {
 			case 1:
@@ -29,21 +29,33 @@ public class AddressBookDirectory {
 				editAddressBook();
 				break;
 			case 3:
-				searchByCity();
+				System.out.println("Enter \n1.Search By City\n2.Search By State");
+				int searChoice = scannerObject.nextInt();
+				if(searChoice==1)
+					searchByCity();
+				else 
+					searchByState();
 				break;
 			case 4:
-				searchByState();
+				System.out.println("Enter \n1.Display By City\n2.Display By State");
+				int displayChoice = scannerObject.nextInt();
+				if(displayChoice==1)
+					displayPeopleByRegion(AddressBook.personByCity);
+				else 
+					displayPeopleByRegion(AddressBook.personByState);
 				break;
 			case 5:
-				displayPeopleByRegion(AddressBook.personByCity);
+				System.out.println("Enter \n1.Display By City\n2.Display By State");
+				int countChoice = scannerObject.nextInt();
+				if(countChoice==1)
+					countPeopleByRegion(AddressBook.personByCity);
+				else 
+					countPeopleByRegion(AddressBook.personByState);
 				break;
 			case 6:
-				displayPeopleByRegion(AddressBook.personByState);
-				break;
-			case 7:
 				displayDirectoryContents();
 				break;
-			case 8:
+			case 7:
 				moreChanges = false;
 				System.out.println("Exiting Address Book Directory !");
 			}
@@ -123,16 +135,29 @@ public class AddressBookDirectory {
 	
 	public void displayPeopleByRegion(HashMap<String, ArrayList<ContactPerson>> listToDisplay) {
 		ArrayList<ContactPerson> list;
-		for (String name : listToDisplay.keySet()) {
-			System.out.println("People residing in: " + name);
-			list = listToDisplay.get(name);
-			for (ContactPerson contact : list) {
-				System.out.println(contact);
+		for (String region : listToDisplay.keySet()) {
+			System.out.println("\nPeople residing in: " + region);
+			list = listToDisplay.get(region);
+			for (ContactPerson person : list) {
+				System.out.println(person);
 			}
 		}
 
 	}
+	
+	public void countPeopleByRegion(HashMap<String, ArrayList<ContactPerson>> listToDisplay) {
+		ArrayList<ContactPerson> list;
+		for (String region : listToDisplay.keySet()) {
+			int count = 0;
+			list = listToDisplay.get(region);
+			for (ContactPerson person : list) {
+				count++;
+			}
+			System.out.println("Number of People residing in " + region+" are: "+count);
+		}
 
+	}
+	
 	public void displayDirectoryContents() {
 
 		System.out.println("----- Contents of the Address Book Directory-----");
