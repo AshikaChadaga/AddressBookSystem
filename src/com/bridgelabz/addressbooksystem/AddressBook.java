@@ -8,7 +8,9 @@ import java.util.Scanner;
 public class AddressBook implements AddressBookIF {
 
 	Scanner scannerObject = new Scanner(System.in);
-	Map<String, ContactPerson> contactList = new HashMap<String,ContactPerson>();
+	public Map<String, ContactPerson> contactList = new HashMap<String,ContactPerson>();
+	public static HashMap<String, ArrayList<ContactPerson>> personByCity  = new HashMap<String, ArrayList<ContactPerson>>();
+	public static HashMap<String, ArrayList<ContactPerson>> personByState = new HashMap<String, ArrayList<ContactPerson>>();
 	public String addressBookName;
 	
 	public String getAddressBookName() {
@@ -96,9 +98,32 @@ public class AddressBook implements AddressBookIF {
 		address.setState(state);
 		address.setZip(zipCode);
 		person.setAddress(address);
-		
+		addPersonToCity(person);
+		addPersonToState(person);
 		contactList.put(firstName, person);
 
+	}
+	
+	public void addPersonToCity(ContactPerson contact) {
+		if (personByCity.containsKey(contact.getAddress().getCity())) {
+			personByCity.get(contact.getAddress().getCity()).add(contact);
+		}
+		else {
+			ArrayList<ContactPerson> cityList = new ArrayList<ContactPerson>();
+			cityList.add(contact);
+			personByCity.put(contact.getAddress().getCity(), cityList);
+		}
+	}
+
+	public void addPersonToState(ContactPerson contact) {
+		if (personByState.containsKey(contact.getAddress().getState())) {			
+			personByState.get(contact.getAddress().getState()).add(contact);
+		}
+		else {
+			ArrayList<ContactPerson> stateList = new ArrayList<ContactPerson>();
+			stateList.add(contact);
+			personByState.put(contact.getAddress().getState(), stateList);
+		}
 	}
 
 	public void editPerson() {
