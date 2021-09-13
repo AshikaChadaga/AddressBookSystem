@@ -135,27 +135,39 @@ public class AddressBookDirectory {
 	
 	public void displayPeopleByRegion(HashMap<String, ArrayList<ContactPerson>> listToDisplay) {
 		ArrayList<ContactPerson> list;
+		System.out.println("Enter the name of the region :");
+		String regionName = scannerObject.next();
 		for (String region : listToDisplay.keySet()) {
-			System.out.println("\nPeople residing in: " + region);
-			list = listToDisplay.get(region);
-			for (ContactPerson person : list) {
-				System.out.println(person);
+			if(regionName.equals(region)) {
+				System.out.println("\nPeople residing in: " + region);
+				list = listToDisplay.get(region);
+				for (ContactPerson person : list) {
+					System.out.println(person);
+				}
+				return;
 			}
+			
 		}
+		System.out.println("No Contact resides in : "+regionName);
 
 	}
 	
 	public void countPeopleByRegion(HashMap<String, ArrayList<ContactPerson>> listToDisplay) {
 		ArrayList<ContactPerson> list;
+		System.out.println("Enter the name of the region :");
+		String regionName = scannerObject.next();
 		for (String region : listToDisplay.keySet()) {
-			int count = 0;
-			list = listToDisplay.get(region);
-			for (ContactPerson person : list) {
-				count++;
+			if(regionName.equals(region)) {
+				int count = 0;
+				list = listToDisplay.get(region);
+				for (ContactPerson person : list) {
+					count++;
+				}
+				System.out.println("Number of People residing in " + region+" are: "+count);
+				return;
 			}
-			System.out.println("Number of People residing in " + region+" are: "+count);
 		}
-
+		System.out.println("No Contact resides in : "+regionName);
 	}
 	
 	public void displayDirectoryContents() {
