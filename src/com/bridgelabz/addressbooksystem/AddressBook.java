@@ -9,6 +9,7 @@ public class AddressBook implements AddressBookIF {
 	Scanner scannerObject = new Scanner(System.in);
 	Map<String, ContactPerson> contactList = new HashMap<String,ContactPerson>();
 	public static String addressBookName;
+	boolean isPresent = false;
 	
 	public String getAddressBookName() {
 		return addressBookName;
@@ -55,8 +56,7 @@ public class AddressBook implements AddressBookIF {
 
 		ContactPerson person = new ContactPerson();
 		Address address = new Address();
-		boolean isPresent = false;
-
+		
 		System.out.println("Enter First Name: ");
 		String firstName = scannerObject.next();
 		
@@ -67,25 +67,27 @@ public class AddressBook implements AddressBookIF {
 				return;
 			}
 		});
-		if(isPresent) {
+		
+		if(isPresent == false) {
+			
 			System.out.println("Enter Last Name: ");
 			String lastName = scannerObject.next();
-	
+			
 			System.out.println("Enter Phone Number: ");
 			long phoneNumber = scannerObject.nextLong();
-	
+			
 			System.out.println("Enter Email: ");
 			String email = scannerObject.next();
-	
+			
 			System.out.println("Enter City: ");
 			String city = scannerObject.next();
-	
+			
 			System.out.println("Enter State: ");
 			String state = scannerObject.next();
-	
+			
 			System.out.println("Enter Zip Code: ");
 			long zipCode = scannerObject.nextLong();
-	
+			
 			person.setFirstName(firstName);
 			person.setLastName(lastName);
 			person.setPhoneNumber(phoneNumber);
@@ -95,7 +97,7 @@ public class AddressBook implements AddressBookIF {
 			address.setZip(zipCode);
 			person.setAddress(address);
 			
-			contactList.put(firstName, person);
+			contactList.put(firstName.toLowerCase(), person);
 		}
 	}
 
