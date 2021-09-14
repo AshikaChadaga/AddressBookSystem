@@ -2,8 +2,13 @@ package com.bridgelabz.addressbooksystem;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.function.Consumer;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class AddressBookDirectory {
 	
@@ -101,73 +106,54 @@ public class AddressBookDirectory {
 		String personName = scannerObject.next();
 		
 		for(AddressBook addressBook : addressBookDirectory.values()) {
-			for(ContactPerson person : addressBook.getContact()) {
-				if(person.getFirstName().equals(personName) && person.getAddress().getCity().equals(cityName)) {
-					System.out.println(personName+" Found in Address Book : "+addressBook.getAddressBookName()+" !");
-					System.out.println(person);
-					return;
-				}
-			}
-		}
-		System.out.println("Contact Does Not Exist !!");
-		
+			ArrayList<ContactPerson> contactList = addressBook.getContact();
+			contactList.stream()
+				.filter(person -> person.getFirstName().equals(personName) && person.getAddress().getCity().equals(cityName))
+				.forEach(person -> System.out.println(person));
+			
+		}		
 	}
 	
 	public void searchByState() {
 		
 		System.out.println("Enter the name of the State where the Person resides : ");
-		String StateName = scannerObject.next();
+		String stateName = scannerObject.next();
 		System.out.println("Enter the name of the Person : ");
 		String personName = scannerObject.next();
 		
 		for(AddressBook addressBook : addressBookDirectory.values()) {
-			for(ContactPerson person : addressBook.getContact()) {
-				if(person.getFirstName().equals(personName) && person.getAddress().getState().equals(StateName)) {
-					System.out.println(personName+" Found in Book : "+addressBook.getAddressBookName()+" !");
-					System.out.println(person);
-					return;
-				}
-			}
-		}
-		System.out.println("Contact Does Not Exist !!");
-		
-	}
-	
-	public void displayPeopleByRegion(HashMap<String, ArrayList<ContactPerson>> listToDisplay) {
-		ArrayList<ContactPerson> list;
-		System.out.println("Enter the name of the region :");
-		String regionName = scannerObject.next();
-		for (String region : listToDisplay.keySet()) {
-			if(regionName.equals(region)) {
-				System.out.println("\nPeople residing in: " + region);
-				list = listToDisplay.get(region);
-				for (ContactPerson person : list) {
-					System.out.println(person);
-				}
-				return;
-			}
+			ArrayList<ContactPerson> contactList = ((AddressBook) addressBook).getContact();
+			contactList.stream()
+				.filter(person -> person.getFirstName().equals(personName) && person.getAddress().getState().equals(stateName))
+				.forEach(person -> System.out.println(person));
 			
 		}
-		System.out.println("No Contact resides in : "+regionName);
 
 	}
 	
-	public void countPeopleByRegion(HashMap<String, ArrayList<ContactPerson>> listToDisplay) {
-		ArrayList<ContactPerson> list;
+	public void displayPeopleByRegion(HashMap<String, ArrayList<ContactPerson>> listToDisplay) {
+
 		System.out.println("Enter the name of the region :");
 		String regionName = scannerObject.next();
-		for (String region : listToDisplay.keySet()) {
-			if(regionName.equals(region)) {
-				int count = 0;
-				list = listToDisplay.get(region);
-				for (ContactPerson person : list) {
-					count++;
-				}
-				System.out.println("Number of People residing in " + region+" are: "+count);
-				return;
-			}
-		}
-		System.out.println("No Contact resides in : "+regionName);
+		
+		listToDisplay.values().stream()
+			.map(region -> region.stream()
+				.filter(person -> person.getAddress().getState().equals(regionName) || person.getAddress().getCity().equals(regionName)))
+				.forEach(person -> person.forEach(personDetails -> System.out.println(personDetails)));
+	}
+	
+	public void countPeopleByRegion(HashMap<String, ArrayList<ContactPerson>> listToDisplay) {
+
+		System.out.println("Enter the name of the region :");
+		String regionName = scannerObject.next();
+		
+		long countPeople = listToDisplay.values().stream()
+				.map(region -> region.stream()
+					.filter(person -> person.getAddress().getState().equals(regionName) || person.getAddress().getCity().equals(regionName)))
+					.count();
+					
+		System.out.println("Number of People residing in " + regionName+" are: "+countPeople+"\n");
+		
 	}
 	
 	public void displayDirectoryContents() {
